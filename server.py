@@ -40,7 +40,7 @@ def upload_image():
         pathlib.PosixPath = pathlib.WindowsPath
 
         # Use forward slashes for paths in Windows
-        model_path = r"D:\HeartDiseasePredictionn\HeartDiseasePrediction\trained_model"
+        model_path = r'trained_model'
 
         learn = load_learner(model_path)
 
