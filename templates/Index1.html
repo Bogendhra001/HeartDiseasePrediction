@@ -1,0 +1,64 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Upload</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+    <h1>Image Upload and Processing</h1>
+    <form action="/upload" method="POST" enctype="multipart/form-data" id="upload-form">
+        <input type="file" name="file" id="file-input" style="display: none;">
+        <input type="submit" value="Upload">
+    </form>
+    <div id="result">
+        <!-- Display machine learning result here -->
+    </div>
+    <div id="drop-area" style="border: 2px dashed #ccc; padding: 20px; text-align: center;">
+        <p>Drag and drop files here</p>
+    </div>
+    <script>
+        const form = document.getElementById('upload-form');
+        const resultDiv = document.getElementById('result');
+        const fileInput = document.getElementById('file-input');
+        const dropArea = document.getElementById('drop-area');
+
+        // Prevent the default behavior of the drop event
+        dropArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropArea.style.backgroundColor = '#f0f0f0'; // Highlight drop area
+        });
+
+        // Restore the original background color when the drag is no longer over the drop area
+        dropArea.addEventListener('dragleave', () => {
+            dropArea.style.backgroundColor = '#fff';
+        });
+
+        // Handle the dropped files
+        dropArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropArea.style.backgroundColor = '#fff'; // Restore background color
+
+            const files = e.dataTransfer.files;
+
+            if (files.length > 0) {
+                fileInput.files = files;
+                form.submit();
+            }
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            resultDiv.innerHTML = 'Processing...';
+
+            const formData = new FormData(form);
+            const response = await fetch('/upload', {
+                method: 'POST',
+                body: formData,
+            });
+            const data = await response.json();
+            resultDiv.innerHTML = data.result;
+        });
+    </script>
+</body>
+</html>
