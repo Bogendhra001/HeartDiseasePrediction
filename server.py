@@ -55,10 +55,10 @@ def upload_image():
             # Use the learner/model to make a prediction on the image_array
             prediction = learn.predict(img_array)
             result = str(prediction)
-            # if 'benign' in result:
-            #     result = "Benign"
-            # else:
-            #     result = "Malignant"
+            if 'benign' in result:
+                result = "Benign"
+            else:
+                result = "Malignant"
             return jsonify({'result': result})
 
         except Exception as e:
