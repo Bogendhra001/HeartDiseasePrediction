@@ -11,14 +11,14 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+
 
 @app.route('/')
 def index():
     return render_template('index.html')
-
-
 
 
 @app.route('/upload', methods=['POST'])
@@ -39,8 +39,8 @@ def upload_image():
         temp = pathlib.PosixPath
         pathlib.PosixPath = pathlib.WindowsPath
 
-
-        model_path = r"D:/Flask_project/project/trained_model"  # Use forward slashes for paths in Windows
+        # Use forward slashes for paths in Windows
+        model_path = r"D:\HeartDiseasePredictionn\HeartDiseasePrediction\trained_model"
 
         learn = load_learner(model_path)
 
@@ -55,18 +55,16 @@ def upload_image():
             # Use the learner/model to make a prediction on the image_array
             prediction = learn.predict(img_array)
             result = str(prediction)
-            if 'benign' in result:
-                result = "Benign"
-            else:
-                result = "Maligant"
+            # if 'benign' in result:
+            #     result = "Benign"
+            # else:
+            #     result = "Malignant"
             return jsonify({'result': result})
 
         except Exception as e:
             return jsonify({'error': f'Error: {str(e)}'})
 
     return jsonify({'error': 'Invalid file format'})
-
-
 
 
 if __name__ == '__main__':
