@@ -69,4 +69,4 @@ def upload_image():
 
 if __name__ == '__main__':
     os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-    app.run(debug=True)
+    app.run(debug=True, host='192.168.1.7', port=80)
